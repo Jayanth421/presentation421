@@ -1,12 +1,12 @@
 # PPT Presentation Management Web Application
 
-Full-stack PPT management system for a college with Google OAuth domain restriction, role-based access, and secure PPT distribution.
+Full-stack PPT management system for a college with Email OTP authentication, role-based access, and secure PPT distribution.
 
 ## Tech Stack
 - Frontend: React + Vite
 - Backend: Node.js + Express
 - Database: MongoDB
-- Auth: Google OAuth 2.0 (restricted to `@cmrcet.ac.in`)
+- Auth: Email OTP + JWT
 - Storage: Local `server/uploads/`
 
 ## Project Structure
@@ -54,11 +54,11 @@ Run:
 npm run dev
 ```
 
-## Google OAuth Setup
-- Create OAuth client in Google Cloud Console.
-- Add authorized origin: `http://localhost:5173`.
-- Add authorized redirect URI if needed by your setup.
-- Set `VITE_GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_ID` to the same value.
+## Email OTP Setup
+- Configure `ZEPTOMAIL_TOKEN` and `EMAIL_FROM` in `server/.env`.
+- Optional: set `ZEPTOMAIL_API_URL` (default `https://api.zeptomail.in/v1.1/email`) and `EMAIL_FROM_NAME`.
+- Use a verified sender email/domain in ZeptoMail for `EMAIL_FROM`.
+- Set `JWT_SECRET` in `server/.env` for token signing.
 
 ## Roles & Permissions
 - Admin: manage users, subjects, classes, assignments, PPTs.
@@ -66,8 +66,10 @@ npm run dev
 - Student: view assigned subjects and download PPTs.
 
 ## Notes
-- Only emails ending with `@cmrcet.ac.in` are allowed.
-- Personal domains (gmail, yahoo, outlook, etc.) are rejected.
+- Roles are assigned automatically from email:
+  - contains `admin` -> Admin
+  - contains `faculty` -> Faculty
+  - otherwise -> Student
 - PPT/PPTX only.
 
 ## Scripts
